@@ -1,0 +1,17 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Magento_Catalog::css/owlcarousel.css')?>">
+<?php 
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$attributeSet = $objectManager->create('Magento\Eav\Api\AttributeSetRepositoryInterface');
+$attributeSetRepository = $attributeSet->get($product->getAttributeSetId());
+$attribute_set_name = $attributeSetRepository->getAttributeSetName();
+echo $attribute_set_name;
+if ($attribute_set_name == 'OTR Tire') {
+	echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('latest-otr')->toHtml();
+} elseif ($attribute_set_name == 'Industrial Tire') {
+	echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('latest-ind')->toHtml();
+} elseif ($attribute_set_name == 'Agricultural Tire') {
+	echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('latest-agr')->toHtml();
+}
+?>

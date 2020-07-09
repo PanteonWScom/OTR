@@ -1,0 +1,41 @@
+<?php
+/** @var \Smartwave\Porto\Block\Product\View $block */
+
+$product = $block->getProduct();
+
+//$product_name = $product->getName();
+//$attr_exists = $product->getResource()->getAttribute('manufacturer');
+//$title = $product_name;
+
+$cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : '';
+
+//if ($attr_exists){
+//    $attr_name = $product->getAttributeText('manufacturer');
+//    if (!is_array($attr_name)){
+//        $title = "$attr_name $product_name";
+//    }
+//}
+
+// check if a product has a custom text for H1 attribute
+$title = $product->getData('h1');
+if (empty($title)) {
+    // Build a title using a template (note: "size" attribute is required):
+    // "Tires (Size)", if no brand
+    // "Tires (Brand) (Size)", if a product has brand
+    $size = $product->getAttributeText('size');
+    $brand = $product->getAttributeText('manufacturer');
+    $title = !empty($brand) ? __('Tires %1 %2', $brand, $size) : __('Tires %1', $size);
+}
+?>
+<?php if ($title): ?>
+<div class="page-title-wrapper<?= /* @escapeNotVerified */ $cssClass ?>">
+<h1 class="page-title"
+    <?php if ($block->getId()): ?> id="<?= /* @escapeNotVerified */ $block->getId() ?>" <?php endif; ?>
+    <?php if ($block->getAddBaseAttributeAria()): ?>
+        aria-labelledby="<?= /* @escapeNotVerified */ $block->getAddBaseAttributeAria() ?>"
+    <?php endif; ?>
+><?= $block->escapeHtml($title) ?></h1>
+<?= $block->getChildHtml() ?>
+</div>
+
+<?php endif; ?>
